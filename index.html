@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Alpha Pro - AI Financial Intelligence</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00f2fe;
+            --secondary: #4facfe;
+            --accent: #ff2d75;
+            --success: #00f5a0;
+            --warning: #ffd166;
+            --danger: #ff6b6b;
+            --dark: #0a0e17;
+            --darker: #050811;
+            --card-bg: rgba(16, 23, 41, 0.8);
+            --card-border: rgba(0, 242, 254, 0.3);
+            --glow: 0 0 20px rgba(0, 242, 254, 0.5);
+            --glow-accent: 0 0 25px rgba(255, 45, 117, 0.4);
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: var(--darker);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, var(--darker) 21px, transparent 1%) center,
+                linear-gradient(var(--darker) 21px, transparent 1%) center,
+                rgba(0, 242, 254, 0.1);
+            background-size: 22px 22px;
+            z-index: -3;
+            opacity: 0.3;
+        }
+
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+
+        .neon-border {
+            position: relative;
+            border: 1px solid transparent;
+            background: linear-gradient(45deg, transparent, var(--card-bg), transparent);
+            background-clip: padding-box;
+            border-radius: 15px;
+        }
+
+        .neon-border::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary), var(--accent), var(--secondary));
+            border-radius: 17px;
+            z-index: -1;
+            opacity: 0.7;
+            animation: borderGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes borderGlow {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, 
+                rgba(10, 14, 23, 0.95) 0%, 
+                rgba(16, 23, 41, 0.9) 50%, 
+                rgba(25, 35, 60, 0.85) 100%);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 30px 40px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 30px;
+            border-radius: 20px;
+            box-shadow: var(--glow);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--primary), 
+                var(--accent), 
+                var(--primary), 
+                transparent);
+        }
+
+        .header h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 242, 254, 0.5);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+        }
+
+        .status-bar {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 242, 254, 0.2);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .tabs-container {
+            background: rgba(16, 23, 41, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 1px solid var(--card-border);
+            overflow: hidden;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0;
+            background: linear-gradient(135deg, 
+                rgba(10, 14, 23, 0.95) 0%, 
+                rgba(16, 23, 41, 0.9) 100%);
+            padding: 0;
+            position: relative;
+        }
+
+        .tab {
+            flex: 1;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.6);
+            border: none;
+            padding: 25px 30px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Exo 2', sans-serif;
+        }
+
+        .tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 242, 254, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .tab:hover::before {
+            left: 100%;
+        }
+
+        .tab:hover {
+            color: var(--primary);
+            background: rgba(0, 242, 254, 0.05);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            background: rgba(0, 242, 254, 0.1);
+            box-shadow: inset 0 -3px 0 var(--primary);
+        }
+
+        .tab i {
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+
+        .content {
+            display: none;
+            padding: 40px;
+            animation: contentSlide 0.5s ease;
+        }
+
+        @keyframes contentSlide {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid var(--card-border);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glow);
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 10px 0;
+        }
+
+        .metric-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .card h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Exo 2', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--glow);
+        }
+
+        .btn:disabled {
+            background: #333;
+            transform: none;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #00cc88);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning), #ffb347);
+            color: #000;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #ff5252);
+        }
+
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent), #ff1a75);
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .chart-container {
+            background: rgba(10, 14, 23, 0.6);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid var(--card-border);
+            position: relative;
+        }
+
+        #chart, #advancedChart, #comparisonChart, #correlationChart {
+            height: 500px;
+            background: transparent;
+            border-radius: 10px;
+        }
+
+        .upload-area {
+            border: 3px dashed var(--card-border);
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            margin: 25px 0;
+            background: rgba(16, 23, 41, 0.5);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(0, 242, 254, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--accent);
+            background: rgba(255, 45, 117, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-shadow: var(--glow);
+        }
+
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 25px 0;
+        }
+
+        .model-card {
+            background: linear-gradient(135deg, rgba(16, 23, 41, 0.8), rgba(25, 35, 60, 0.6));
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid var(--card-border);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .model-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .model-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glow);
+        }
+
+        .model-card h3 {
+            font-family: 'Orbitron', monospace;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .metric {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .metric:hover {
+            background: rgba(0, 242, 254, 0.1);
+            border-color: var(--card-border);
+        }
+
+        .metric-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 5px 0;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .alert {
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 1px solid;
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .alert::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 4px;
+        }
+
+        .alert-success {
+            background: rgba(0, 245, 160, 0.1);
+            color: var(--success);
+            border-color: rgba(0, 245, 160, 0.3);
+        }
+
+        .alert-success::before {
+            background: var(--success);
+        }
+
+        .alert-error {
+            background: rgba(255, 107, 107, 0.1);
+            color: var(--danger);
+            border-color: rgba(255, 107, 107, 0.3);
+        }
+
+        .alert-error::before {
+            background: var(--danger);
+        }
+
+        .alert-info {
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--primary);
+            border-color: rgba(0, 242, 254, 0.3);
+        }
+
+        .alert-info::before {
+            background: var(--primary);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .quantum-spinner {
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(0, 242, 254, 0.3);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+            box-shadow: var(--glow);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .prediction-result {
+            background: linear-gradient(135deg, 
+                rgba(0, 242, 254, 0.1) 0%, 
+                rgba(79, 172, 254, 0.1) 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 25px 0;
+            border: 1px solid var(--card-border);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prediction-result::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .prediction-price {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 20px 0;
+            text-shadow: var(--glow);
+        }
+
+        .advanced-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 25px 0;
+        }
+
+        .control-group {
+            background: rgba(16, 23, 41, 0.6);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid var(--card-border);
+        }
+
+        .control-group h4 {
+            font-family: 'Orbitron', monospace;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .slider-container {
+            margin: 20px 0;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .slider-value {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: var(--glow);
+            border: 2px solid white;
+        }
+
+        .data-preview {
+            max-height: 400px;
+            overflow-y: auto;
+            margin: 20px 0;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            background: rgba(10, 14, 23, 0.6);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th, .data-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .data-table th {
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--primary);
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .data-table tr:hover {
+            background: rgba(0, 242, 254, 0.05);
+        }
+
+        .market-sentiment {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .sentiment-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--success);
+            margin: 15px 0;
+        }
+
+        .sentiment-bar {
+            background: rgba(255, 255, 255, 0.1);
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .sentiment-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--danger), var(--warning), var(--success));
+            transition: width 0.5s ease;
+        }
+
+        .sentiment-labels {
+            display: flex;
+            justify-content: space-between;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                text-align: left;
+                padding: 20px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* New Advanced Features */
+        .neural-network {
+            position: relative;
+            height: 200px;
+            margin: 30px 0;
+        }
+
+        .node {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: var(--glow);
+        }
+
+        .connection {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            transform-origin: 0 0;
+        }
+
+        .real-time-feed {
+            background: rgba(10, 14, 23, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid var(--card-border);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .feed-item {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .feed-item:last-child {
+            border-bottom: none;
+        }
+
+        .feed-icon {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        .risk-meter {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .risk-needle {
+            width: 4px;
+            height: 80px;
+            background: var(--primary);
+            margin: 0 auto;
+            transform-origin: bottom center;
+            transform: rotate(-45deg);
+            transition: transform 0.5s ease;
+            box-shadow: var(--glow);
+        }
+
+        .risk-scale {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .performance-chart {
+            height: 300px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    <div class="particles-container" id="particles"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-atom"></i>Stock Market Prediction System</h1>
+            <p>Next-Generation AI Financial Intelligence Platform</p>
+            
+            <div class="status-bar">
+                <div class="status-item">
+                    <div class="status-dot"></div>
+                    <span>AI Models: <strong id="modelStatus">Ready</strong></span>
+                </div>
+                <div class="status-item">
+                    <div class="status-dot" style="background: var(--primary)"></div>
+                    <span>Data Pipeline: <strong id="dataStatus">Active</strong></span>
+                </div>
+                <div class="status-item">
+                    <div class="status-dot" style="background: var(--accent)"></div>
+                    <span>Market Feed: <strong id="marketStatus">Live</strong></span>
+                </div>
+                <div class="status-item">
+                    <div class="status-dot" style="background: var(--success)"></div>
+                    <span>Quantum Engine: <strong id="quantumStatus">Online</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="tabs-container">
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('dashboard')">
+                    <i class="fas fa-tachometer-alt"></i> Quantum Dashboard
+                </button>
+                <button class="tab" onclick="showTab('data')">
+                    <i class="fas fa-database"></i> Data Fusion
+                </button>
+                <button class="tab" onclick="showTab('analysis')">
+                    <i class="fas fa-chart-network"></i> Neural Analysis
+                </button>
+                <button class="tab" onclick="showTab('prediction')">
+                    <i class="fas fa-crystal-ball"></i> Alpha Prediction
+                </button>
+                <button class="tab" onclick="showTab('trading')">
+                    <i class="fas fa-robot"></i> Auto Trading
+                </button>
+                <button class="tab" onclick="showTab('quantum')">
+                    <i class="fas fa-question-circle"></i> Quantum Lab
+                </button>
+            </div>
+
+            <!-- Dashboard -->
+            <div id="dashboard" class="content active">
+                <div class="dashboard-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Portfolio Value</div>
+                        <div class="metric-value" id="portfolioValue">$1,247,850</div>
+                        <div class="metric-label" style="color: var(--success)">+2.34% Today</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">AI Confidence</div>
+                        <div class="metric-value" id="aiConfidence">94.7%</div>
+                        <div class="metric-label">Market Conditions</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Risk Score</div>
+                        <div class="metric-value" id="riskScore">Low</div>
+                        <div class="metric-label">Portfolio Health</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Alpha Generated</div>
+                        <div class="metric-value" id="alphaGenerated">+15.8%</div>
+                        <div class="metric-label">YTD Performance</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fas fa-brain"></i> Neural Network Architecture</h2>
+                    <div class="neural-network" id="neuralViz">
+                        <!-- Neural network visualization will be generated here -->
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fas fa-bolt"></i> Real-Time Market Intelligence</h2>
+                    <div class="real-time-feed" id="marketFeed">
+                        <div class="feed-item">
+                            <div class="feed-icon"></div>
+                            <span><strong>AAPL</strong> showing strong momentum with RSI at 68</span>
+                        </div>
+                        <div class="feed-item">
+                            <div class="feed-icon" style="background: var(--warning)"></div>
+                            <span><strong>TSLA</strong> volatility spike detected - monitoring closely</span>
+                        </div>
+                        <div class="feed-item">
+                            <div class="feed-icon" style="background: var(--primary)"></div>
+                            <span>Market sentiment shifting to bullish - 72% confidence</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Fusion -->
+            <div id="data" class="content">
+                <div class="card">
+                    <h2><i class="fas fa-database"></i> Multi-Source Data Fusion</h2>
+                    
+                    <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                        <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                        <h3>Quantum Data Ingestion</h3>
+                        <p>Drag & drop your financial datasets or click to browse</p>
+                        <p><small>Supports: CSV, JSON, Excel, Real-time API feeds</small></p>
+                        <input type="file" id="fileInput" class="file-input" accept=".csv,.json,.xlsx,.xls" onchange="handleFileSelect(event)">
+                    </div>
+                    
+                    <div id="uploadStatus" class="alert" style="display:none"></div>
+                    
+                    <div class="controls">
+                        <button class="btn btn-success" onclick="loadQuantumData()">
+                            <i class="fas fa-bolt"></i> Load Quantum Dataset
+                        </button>
+                        <button class="btn" onclick="connectLiveFeed()">
+                            <i class="fas fa-satellite"></i> Connect Live Feed
+                        </button>
+                        <button class="btn btn-danger" onclick="clearData()">
+                            <i class="fas fa-trash"></i> Purge Data
+                        </button>
+                    </div>
+                    
+                    <div id="dataPreview" style="display:none">
+                        <h3><i class="fas fa-table"></i> Data Matrix Preview</h3>
+                        <div class="data-preview">
+                            <table class="data-table" id="previewTable">
+                                <!-- Data will be populated here -->
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fas fa-project-diagram"></i> Data Quality Matrix</h2>
+                    <div class="metrics-grid">
+                        <div class="metric">
+                            <div class="metric-label">Data Points</div>
+                            <div class="metric-value" id="dataPoints">0</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Quality Score</div>
+                            <div class="metric-value" id="qualityScore">0%</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Features</div>
+                            <div class="metric-value" id="featureCount">0</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Update Frequency</div>
+                            <div class="metric-value" id="updateFreq">Live</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Neural Analysis -->
+            <div id="analysis" class="content">
+                <div class="card">
+                    <h2><i class="fas fa-chart-network"></i> Advanced Technical Analysis</h2>
+                    
+                    <div class="advanced-controls">
+                        <div class="control-group">
+                            <h4><i class="fas fa-sliders-h"></i> Neural Parameters</h4>
+                            <div class="slider-container">
+                                <div class="slider-label">
+                                    <span>Lookback Period</span>
+                                    <span class="slider-value" id="lookbackValue">60</span>
+                                </div>
+                                <input type="range" min="10" max="200" value="60" class="slider" id="lookbackSlider" oninput="updateLookback(this.value)">
+                            </div>
+                            <div class="slider-container">
+                                <div class="slider-label">
+                                    <span>Neural Depth</span>
+                                    <span class="slider-value" id="neuralDepth">8</span>
+                                </div>
+                                <input type="range" min="1" max="20" value="8" class="slider" id="neuralSlider" oninput="updateNeuralDepth(this.value)">
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <h4><i class="fas fa-wave-square"></i> Market Regime</h4>
+                            <div id="marketRegime" style="text-align: center; padding: 20px;">
+                                <div style="font-size: 3rem; color: var(--success); margin-bottom: 10px;">
+                                    <i class="fas fa-bullseye"></i>
+                                </div>
+                                <div style="font-size: 1.5rem; font-weight: bold; color: var(--success);">BULL MARKET</div>
+                                <div style="color: rgba(255, 255, 255, 0.7); margin-top: 5px;">Low Volatility Trending Up</div>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <h4><i class="fas fa-thermometer-half"></i> Risk Assessment</h4>
+                            <div class="risk-meter">
+                                <div class="risk-needle" id="riskNeedle"></div>
+                                <div class="risk-scale">
+                                    <span>Low</span>
+                                    <span>Medium</span>
+                                    <span>High</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <div id="advancedChart"></div>
+                    </div>
+                    
+                    <div class="controls">
+                        <button class="btn" onclick="runDeepAnalysis()">
+                            <i class="fas fa-brain"></i> Run Deep Analysis
+                        </button>
+                        <button class="btn btn-success" onclick="generateSignals()">
+                            <i class="fas fa-broadcast-tower"></i> Generate Signals
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alpha Prediction -->
+            <div id="prediction" class="content">
+                <div class="card">
+                    <h2><i class="fas fa-crystal-ball"></i> Quantum Prediction Engine</h2>
+                    
+                    <div class="controls">
+                        <button id="trainBtn" class="btn" onclick="trainQuantumModels()">
+                            <i class="fas fa-brain"></i> Train Quantum Models
+                        </button>
+                        <button id="predictBtn" class="btn btn-success" onclick="makeQuantumPrediction()" disabled>
+                            <i class="fas fa-bolt"></i> Generate Predictions
+                        </button>
+                        <button class="btn btn-warning" onclick="runBacktest()">
+                            <i class="fas fa-history"></i> Quantum Backtest
+                        </button>
+                        <button class="btn btn-danger" onclick="resetQuantum()">
+                            <i class="fas fa-redo"></i> Reset System
+                        </button>
+                    </div>
+                    
+                    <div id="trainStatus" class="alert" style="display:none"></div>
+                    
+                    <div class="loading" id="loading">
+                        <div class="quantum-spinner"></div>
+                        <p>Quantum AI Processing... Analyzing multi-dimensional patterns</p>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div id="chart"></div>
+                    </div>
+                    
+                    <div id="predictionResult" class="prediction-result" style="display:none">
+                        <h3><i class="fas fa-bullseye"></i> Quantum Prediction Matrix</h3>
+                        <div class="prediction-price" id="predictionPrice">$0.00</div>
+                        <p id="predictionDetails"></p>
+                        <div style="margin-top: 25px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.2rem; font-weight: bold; color: var(--primary);">Confidence</div>
+                                <div style="font-size: 1.8rem;" id="confidenceLevel">0%</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.2rem; font-weight: bold; color: var(--primary);">Volatility</div>
+                                <div style="font-size: 1.8rem;" id="volatilityLevel">-</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.2rem; font-weight: bold; color: var(--primary);">Time Horizon</div>
+                                <div style="font-size: 1.8rem;" id="timeHorizon">1D</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fas fa-robot"></i> Model Performance Matrix</h2>
+                    <div class="model-grid">
+                        <div class="model-card">
+                            <h3><i class="fas fa-network-wired"></i> Quantum LSTM</h3>
+                            <p>Deep temporal pattern recognition</p>
+                            <div class="metrics-grid">
+                                <div class="metric">
+                                    <div class="metric-label">Accuracy</div>
+                                    <div class="metric-value">92.3%</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-label">Precision</div>
+                                    <div class="metric-value">94.1%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="model-card">
+                            <h3><i class="fas fa-project-diagram"></i> Neural Ensemble</h3>
+                            <p>Multi-model intelligence fusion</p>
+                            <div class="metrics-grid">
+                                <div class="metric">
+                                    <div class="metric-label">Accuracy</div>
+                                    <div class="metric-value">95.8%</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-label">Sharpe</div>
+                                    <div class="metric-value">2.34</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Auto Trading -->
+            <div id="trading" class="content">
+                <div class="card">
+                    <h2><i class="fas fa-robot"></i> Autonomous Trading Engine</h2>
+                    
+                    <div class="dashboard-grid">
+                        <div class="metric-card">
+                            <div class="metric-label">Trading Status</div>
+                            <div class="metric-value" style="color: var(--success)">ACTIVE</div>
+                            <div class="metric-label">Live since 08:00 EST</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Today's P&L</div>
+                            <div class="metric-value" style="color: var(--success)">+$2,847</div>
+                            <div class="metric-label">+1.24%</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Active Positions</div>
+                            <div class="metric-value">8</div>
+                            <div class="metric-label">Across 3 sectors</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Win Rate</div>
+                            <div class="metric-value">76.5%</div>
+                            <div class="metric-label">This week</div>
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <button class="btn btn-success" onclick="startTrading()">
+                            <i class="fas fa-play"></i> Start Auto-Trading
+                        </button>
+                        <button class="btn btn-warning" onclick="pauseTrading()">
+                            <i class="fas fa-pause"></i> Pause Engine
+                        </button>
+                        <button class="btn btn-danger" onclick="stopTrading()">
+                            <i class="fas fa-stop"></i> Emergency Stop
+                        </button>
+                        <button class="btn" onclick="optimizeStrategy()">
+                            <i class="fas fa-cogs"></i> Optimize Strategy
+                        </button>
+                    </div>
+
+                    <div class="chart-container">
+                        <div class="performance-chart" id="tradingChart"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quantum Lab -->
+            <div id="quantum" class="content">
+                <div class="card">
+                    <h2><i class="fas fa-question-circle"></i> Quantum Computing Lab</h2>
+                    
+                    <div class="dashboard-grid">
+                        <div class="metric-card">
+                            <div class="metric-label">Qubits Online</div>
+                            <div class="metric-value">128</div>
+                            <div class="metric-label">Quantum Volume: 64</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Algorithm Speed</div>
+                            <div class="metric-value">1.2T ops/s</div>
+                            <div class="metric-label">99.7% fidelity</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Entanglement</div>
+                            <div class="metric-value">98.3%</div>
+                            <div class="metric-label">Quantum State</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Coherence Time</div>
+                            <div class="metric-value">450μs</div>
+                            <div class="metric-label">Stable</div>
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <button class="btn" onclick="runQuantumSimulation()">
+                            <i class="fas fa-atom"></i> Run Quantum Simulation
+                        </button>
+                        <button class="btn btn-success" onclick="trainQuantumNN()">
+                            <i class="fas fa-brain"></i> Train Quantum Neural Net
+                        </button>
+                        <button class="btn btn-accent" onclick="optimizePortfolio()">
+                            <i class="fas fa-chart-pie"></i> Quantum Portfolio Opt
+                        </button>
+                    </div>
+
+                    <div class="chart-container">
+                        <div id="quantumChart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced JavaScript with Quantum Features
+        let currentData = null;
+        let tradingActive = false;
+        let quantumState = 'ready';
+
+        // Initialize particles
+        function initParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.width = Math.random() * 3 + 1 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Initialize neural network visualization
+        function initNeuralNetwork() {
+            const container = document.getElementById('neuralViz');
+            // Simple neural network visualization
+            for (let i = 0; i < 50; i++) {
+                const node = document.createElement('div');
+                node.className = 'node';
+                node.style.left = Math.random() * 100 + '%';
+                node.style.top = Math.random() * 100 + '%';
+                container.appendChild(node);
+            }
+        }
+
+        function showTab(id) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(id).classList.add('active');
+            
+            // Update real-time data when switching tabs
+            updateRealtimeData();
+        }
+
+        function updateRealtimeData() {
+            // Simulate real-time data updates
+            const portfolioChange = (Math.random() * 4 - 2).toFixed(2);
+            document.getElementById('portfolioValue').textContent = `$${(1247850 + Math.random() * 50000).toLocaleString()}`;
+            document.getElementById('aiConfidence').textContent = (92 + Math.random() * 6).toFixed(1) + '%';
+            document.getElementById('alphaGenerated').textContent = `${portfolioChange > 0 ? '+' : ''}${portfolioChange}%`;
+            
+            // Update risk needle
+            const riskAngle = Math.random() * 90 - 45;
+            document.getElementById('riskNeedle').style.transform = `rotate(${riskAngle}deg)`;
+        }
+
+        // Enhanced file handling
+        function handleFileSelect(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                showUploadStatus('Quantum data ingestion initiated...', 'info');
+                setTimeout(() => {
+                    showUploadStatus('Data fusion complete! Quantum patterns detected.', 'success');
+                    simulateDataPreview();
+                }, 2000);
+            }
+        }
+
+        function simulateDataPreview() {
+            document.getElementById('dataPreview').style.display = 'block';
+            document.getElementById('dataPoints').textContent = '12,847';
+            document.getElementById('qualityScore').textContent = '98.3%';
+            document.getElementById('featureCount').textContent = '24';
+            
+            // Simulate table data
+            const table = document.getElementById('previewTable');
+            table.innerHTML = `
+                <tr>
+                    <th>TIMESTAMP</th>
+                    <th>PRICE</th>
+                    <th>VOLUME</th>
+                    <th>RSI</th>
+                    <th>TREND</th>
+                </tr>
+                <tr>
+                    <td>2024-03-20 09:30</td>
+                    <td>$182.45</td>
+                    <td>2.4M</td>
+                    <td>68.2</td>
+                    <td style="color: var(--success)">↑ BULLISH</td>
+                </tr>
+                <tr>
+                    <td>2024-03-20 09:45</td>
+                    <td>$183.12</td>
+                    <td>1.8M</td>
+                    <td>72.1</td>
+                    <td style="color: var(--success)">↑ BULLISH</td>
+                </tr>
+                <tr>
+                    <td>2024-03-20 10:00</td>
+                    <td>$182.89</td>
+                    <td>2.1M</td>
+                    <td>65.8</td>
+                    <td style="color: var(--warning)">→ NEUTRAL</td>
+                </tr>
+            `;
+        }
+
+        function showUploadStatus(message, type) {
+            const statusDiv = document.getElementById('uploadStatus');
+            statusDiv.textContent = message;
+            statusDiv.className = `alert alert-${type}`;
+            statusDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Quantum training function
+        async function trainQuantumModels() {
+            document.getElementById('trainStatus').style.display = 'none';
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('trainBtn').disabled = true;
+            
+            try {
+                // Simulate quantum training process
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('trainStatus').className = 'alert alert-success';
+                document.getElementById('trainStatus').textContent = '✅ Quantum models trained successfully! Neural networks optimized.';
+                document.getElementById('trainStatus').style.display = 'block';
+                document.getElementById('predictBtn').disabled = false;
+                
+                // Update model status
+                document.getElementById('modelStatus').innerHTML = '<span style="color: var(--success)">Trained</span>';
+                
+            } catch (error) {
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('trainStatus').className = 'alert alert-error';
+                document.getElementById('trainStatus').textContent = '❌ Quantum training failed: ' + error;
+                document.getElementById('trainStatus').style.display = 'block';
+            }
+            
+            document.getElementById('trainBtn').disabled = false;
+        }
+
+        // Quantum prediction function
+        async function makeQuantumPrediction() {
+            document.getElementById('loading').classList.add('active');
+            
+            try {
+                // Simulate quantum prediction
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                document.getElementById('loading').classList.remove('active');
+                
+                // Generate realistic prediction data
+                const currentPrice = 182.45;
+                const prediction = currentPrice * (1 + (Math.random() * 0.04 - 0.02));
+                const change = ((prediction - currentPrice) / currentPrice) * 100;
+                
+                // Update prediction display
+                document.getElementById('predictionResult').style.display = 'block';
+                document.getElementById('predictionPrice').textContent = `$${prediction.toFixed(2)}`;
+                
+                const changeText = change >= 0 ? 
+                    `<span style="color: var(--success)">📈 +${change.toFixed(2)}%</span>` : 
+                    `<span style="color: var(--danger)">📉 ${change.toFixed(2)}%</span>`;
+                
+                document.getElementById('predictionDetails').innerHTML = 
+                    `Quantum Forecast: ${changeText} | Current: $${currentPrice.toFixed(2)}`;
+                
+                document.getElementById('confidenceLevel').textContent = (85 + Math.random() * 10).toFixed(0) + '%';
+                document.getElementById('volatilityLevel').textContent = change > 2 ? 'HIGH' : change < -2 ? 'HIGH' : 'MEDIUM';
+                
+                // Update chart with prediction
+                updatePredictionChart(currentPrice, prediction);
+                
+            } catch (error) {
+                document.getElementById('loading').classList.remove('active');
+                alert('❌ Quantum prediction failed: ' + error);
+            }
+        }
+
+        function updatePredictionChart(currentPrice, prediction) {
+            const dates = [];
+            const actual = [];
+            const predicted = [];
+            
+            // Generate sample data
+            for (let i = 0; i < 30; i++) {
+                dates.push(`Day ${i + 1}`);
+                const base = currentPrice * (0.95 + Math.random() * 0.1);
+                actual.push(base);
+                predicted.push(base * (0.98 + Math.random() * 0.04));
+            }
+            
+            // Add prediction point
+            dates.push('Tomorrow');
+            actual.push(null);
+            predicted.push(prediction);
+            
+            const trace1 = {
+                x: dates,
+                y: actual,
+                name: 'Actual',
+                mode: 'lines',
+                line: { color: '#00f2fe', width: 3 }
+            };
+            
+            const trace2 = {
+                x: dates,
+                y: predicted,
+                name: 'Quantum Prediction',
+                mode: 'lines+markers',
+                line: { color: '#ff2d75', width: 3, dash: 'dot' },
+                marker: { size: 8 }
+            };
+            
+            const layout = {
+                title: 'Quantum Price Prediction Matrix',
+                xaxis: { 
+                    title: 'Time Horizon',
+                    gridcolor: 'rgba(255,255,255,0.1)'
+                },
+                yaxis: { 
+                    title: 'Price ($)',
+                    gridcolor: 'rgba(255,255,255,0.1)'
+                },
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                font: { color: '#ffffff' },
+                showlegend: true
+            };
+            
+            Plotly.newPlot('chart', [trace1, trace2], layout, { responsive: true });
+        }
+
+        // Trading functions
+        function startTrading() {
+            tradingActive = true;
+            showTradingAlert('🟢 Autonomous trading activated! Quantum engine live.', 'success');
+            updateTradingChart();
+        }
+
+        function pauseTrading() {
+            tradingActive = false;
+            showTradingAlert('🟡 Trading engine paused. Monitoring markets...', 'warning');
+        }
+
+        function stopTrading() {
+            tradingActive = false;
+            showTradingAlert('🔴 EMERGENCY STOP! All positions being liquidated.', 'error');
+        }
+
+        function showTradingAlert(message, type) {
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            document.querySelector('#trading .card').insertBefore(alert, document.querySelector('#trading .controls'));
+            
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+
+        function updateTradingChart() {
+            // Simulate trading performance chart
+            const dates = [];
+            const performance = [100];
+            
+            for (let i = 1; i <= 30; i++) {
+                dates.push(`Day ${i}`);
+                const change = (Math.random() * 2 - 1);
+                performance.push(performance[i-1] * (1 + change/100));
+            }
+            
+            const trace = {
+                x: dates,
+                y: performance,
+                type: 'scatter',
+                mode: 'lines',
+                line: { color: '#00f5a0', width: 4 },
+                fill: 'tozeroy',
+                fillcolor: 'rgba(0, 245, 160, 0.1)'
+            };
+            
+            const layout = {
+                title: 'Auto-Trading Performance',
+                xaxis: { gridcolor: 'rgba(255,255,255,0.1)' },
+                yaxis: { gridcolor: 'rgba(255,255,255,0.1)' },
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                font: { color: '#ffffff' }
+            };
+            
+            Plotly.newPlot('tradingChart', [trace], layout, { responsive: true });
+        }
+
+        // Quantum lab functions
+        function runQuantumSimulation() {
+            showUploadStatus('🧪 Running quantum simulation... Entanglement initialized.', 'info');
+            setTimeout(() => {
+                showUploadStatus('✅ Quantum simulation complete! New trading patterns discovered.', 'success');
+            }, 3000);
+        }
+
+        function trainQuantumNN() {
+            showUploadStatus('🧠 Training quantum neural network... This may take a moment.', 'info');
+            setTimeout(() => {
+                showUploadStatus('✅ Quantum NN trained! 47% improvement in prediction accuracy.', 'success');
+            }, 4000);
+        }
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initParticles();
+            initNeuralNetwork();
+            updateRealtimeData();
+            
+            // Start real-time updates
+            setInterval(updateRealtimeData, 5000);
+            
+            // Initialize charts
+            updateTradingChart();
+        });
+
+        // Placeholder functions for other features
+        function loadQuantumData() { showUploadStatus('🌀 Loading quantum dataset...', 'info'); }
+        function connectLiveFeed() { showUploadStatus('📡 Connecting to live market feed...', 'info'); }
+        function clearData() { showUploadStatus('🗑️ Data purged from quantum memory.', 'info'); }
+        function updateLookback(value) { document.getElementById('lookbackValue').textContent = value; }
+        function updateNeuralDepth(value) { document.getElementById('neuralDepth').textContent = value; }
+        function runDeepAnalysis() { showUploadStatus('🔍 Running deep neural analysis...', 'info'); }
+        function generateSignals() { showUploadStatus('📡 Generating trading signals...', 'info'); }
+        function runBacktest() { showUploadStatus('📊 Running quantum backtest...', 'info'); }
+        function resetQuantum() { showUploadStatus('🔄 Quantum system reset complete.', 'info'); }
+        function optimizeStrategy() { showUploadStatus('⚡ Optimizing trading strategy...', 'info'); }
+        function optimizePortfolio() { showUploadStatus('🎯 Running quantum portfolio optimization...', 'info'); }
+    </script>
+</body>
+</html>
